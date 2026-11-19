@@ -28,7 +28,15 @@ async function listarFuturos(req, res, next) {
 
 async function show(req, res, next) {
   try {
-    const id = parseInt(req.params.id);
+    const id = Number(req.params.id);
+
+    if (!Number.isInteger(id) || id <= 0) {
+      return res.status(400).json({
+        erro: {
+          mensagem: "ID inválido",
+        },
+      });
+    }
     const evento = await EventoService.buscarPorId(id);
     res.json(evento);
   } catch (erro) {
